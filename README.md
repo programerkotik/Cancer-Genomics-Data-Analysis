@@ -33,13 +33,10 @@ Cancer Genomics Data Analysis exercise for the course Analytical Methods in Canc
 
 ## Installation and Dependencies
 
--bwa (v0.7.17)
-
--samtools (v1.13)
-
--fastp (v0.20.1)
-
--gnuplot (v5.2)
+- bwa (v0.7.17)
+- samtools (v1.13)
+- fastp (v0.20.1)
+- gnuplot (v5.2)
 
 All dependencies can be installed using conda by creating a new environment and installing the packages listed in requirements.txt:
 
