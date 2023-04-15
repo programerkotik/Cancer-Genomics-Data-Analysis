@@ -12,7 +12,6 @@ Cancer Genomics Data Analysis exercise for the course Analytical Methods in Canc
 
 ## Repository Structure
 ```
-analysis_pipeline/
 ├── scripts/
 │   ├── align_reads.sh
 │   ├── generate_plot.sh
@@ -23,18 +22,23 @@ analysis_pipeline/
 │   └── plot.png
 ├── README.md
 ├── requirements.txt
+├── reference/
+│   └── hg19.fa
 └── sample_data/
-    ├── tumor_R1.fastq.gz
-    ├── tumor_R2.fastq.gz
-    ├── normal_R1.fastq.gz
-    └── normal_R2.fastq.gz
+    ├── tu.r1.fq.gz
+    ├── tu.r2.fq.gz
+    ├── wt.r1.fq.gz
+    └── wt.r2.fq.gz
 ```
 
 ## Installation and Dependencies
 
 -bwa (v0.7.17)
+
 -samtools (v1.13)
+
 -fastp (v0.20.1)
+
 -gnuplot (v5.2)
 
 All dependencies can be installed using conda by creating a new environment and installing the packages listed in requirements.txt:
