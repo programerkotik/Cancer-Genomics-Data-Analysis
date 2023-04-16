@@ -35,7 +35,7 @@ log2 = np.log2(tumor_reads/normal_reads)
 log2 = np.nan_to_num(log2, nan=0, posinf=0, neginf=0)
 
 # Plot
-plt.figure(figsize=(20,10))
+plt.figure(figsize=(10,5))
 plt.scatter(tumor_pos, log2, color='k', s=1)
 plt.xlabel('Position (ChrX)')
 plt.ylabel('Log2(Tumor/Normal)')
