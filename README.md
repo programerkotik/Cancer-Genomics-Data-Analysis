@@ -28,23 +28,6 @@ bash scripts/analysis.sh
 ```
 
 ### Notes
-- Running genome indexing and alignment is extremely computationally expensive for human genome. The indexing of genome using following command took me ~3 hours (14442.15 sec):
+- Running genome indexing and alignment is extremely computationally expensive for human genome. The indexing of genome using following command took me ~3 hours (14442.15 sec): ```bwa index reference/hg19.fa```. The mapping of reads to the reference genome using following command took another 40 minutes (2362.867 seconds) ```bash bwa mem -M -t 8 $REF sample_data/tu.r1.fq.gz sample_data/tu.r2.fq.gz```. Is it how it was supposed to be or I did something wrong? What does it mean to downsample the genome?
 
-```
-bwa index reference/hg19.fa
-```
-
-The mapping of reads to the reference genome using following command took another 40 minutes (2362.867 seconds)
-
-```bash
-bwa mem -M -t 8 $REF sample_data/tu.r1.fq.gz sample_data/tu.r2.fq.gz
-```
-
-Is it how it was supposed to be or I did something wrong? What does it mean to downsample the genome?
-
-- First I tried to use Delly tool but I failed to install it because of the following error:
-
-```
-delly: error while loading shared libraries: libboost_iostreams.so.1.67.0: cannot open shared object file: No such file or directory
-```
-Same issue is discussed [here](https://github.com/jodyphelan/TBProfiler/issues/88).
+- First I tried to use Delly tool but I failed to install it because of the following error: ```delly: error while loading shared libraries: libboost_iostreams.so.1.67.0: cannot open shared object file: No such file or directory```. Same issue is discussed [here](https://github.com/jodyphelan/TBProfiler/issues/88).
