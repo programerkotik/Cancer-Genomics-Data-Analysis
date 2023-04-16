@@ -2,69 +2,49 @@
 Cancer Genomics Data Analysis exercise for the course Analytical Methods in Cancer Genomics 2023. The goal of the exercise is to generate a read-depth plot for human cancer sample.
 
 ## Analysis Pipeline
-1. Download the paired tumor-normal sample pair data from the given source.
-2. Trim the adapter sequences and low-quality reads using fastp.
-3. Align the trimmed reads to the human reference genome (GRCh37/hg19) using bwa mem.
-4. Sort the aligned reads using samtools sort.
-5. Index the sorted BAM file using samtools index.
-6. Subset the BAM file to the region of interest (chrX:20000000-40000000) using samtools view.
-7. Generate a read-depth plot using samtools depth and gnuplot.
-
-## Repository Structure
-```
-├── scripts/
-│   ├── align_reads.sh
-│   ├── generate_plot.sh
-│   └── preprocess_reads.sh
-├── output/
-│   ├── alignment.bammain
-│   ├── alignment.bam.bai
-│   └── plot.png
-├── README.md
-├── requirements.txt
-├── reference/
-│   └── hg19.fa
-└── sample_data/
-    ├── tu.r1.fq.gz
-    ├── tu.r2.fq.gz
-    ├── wt.r1.fq.gz
-    └── wt.r2.fq.gz
-```
+1. Index the reference genome (reference/hg19) using bwa index.
+2. Align the reads to the human reference genome (reference/hg19) using bwa mem.
+3. Sort the aligned reads using samtools sort.
+4. Index the sorted BAM file using samtools index.
+5. Subset the BAM file to the region of interest (chrX:20000000-40000000) using samtools view.
+6. Retrieve the read-depth information for the region of interest using samtools depth.
+7. Generate a read-depth plot using custom Python script.
 
 ## Installation and Dependencies
 
-- bwa (v0.7.17)
-- samtools (v1.13)
-- fastp (v0.20.1)
-- gnuplot (v5.2)
+- bwa (0.7.17-r1188)
+- samtools (v1.17)
 
-All dependencies can be installed using conda by creating a new environment and installing the packages listed in requirements.txt:
+For Python script:
+- pandas (v1.5.3)
+- matplotlib (v3.7.1)
+- numpy (v1.24.2)
 
-```
-conda create -n cancer_genomics_env
-conda activate cancer_genomics_env
-conda install --file requirements.txt
-```
 
 ## Usage
-1. Clone the repository and navigate to the analysis_pipeline directory.
-2. Activate the conda environment: conda activate cancer_genomics_env
-3. Place the paired tumor-normal sample pair data in the sample_data directory.
-4. Run the preprocess_reads.sh script to trim the adapter sequences and low-quality reads:
+The pipeline can be run using the following command:
 ```
-sh scripts/preprocess_reads.sh sample_data/tumor_R1.fastq.gz sample_data/tumor_R2.fastq.gz sample_data/normal_R1.fastq.gz sample_data/normal_R2.fastq.gz
+bash scripts/analysis.sh
 ```
-5. Run the align_reads.sh script to align the reads to the human reference genome, sort and index the BAM file, and subset the BAM file to the region of interest:
-```
-sh scripts/align_reads.sh
-```
-6. Run the generate_plot.sh script to generate the read-depth plot:
-```
-sh scripts/generate_plot.sh
-```
-7.The resulting plot can be found in the output directory: output/plot.png.
 
 ### Notes
-- This pipeline assumes that the data is in paired-end format.
-- The align_reads.sh script assumes that the reference genome (GRCh37/hg19) is located in reference/hg19.fa. If using a different reference genome, this script should be modified accordingly.
-- The generate_plot.sh script assumes that the BAM file is located in output/alignment.bam. If the BAM file is located elsewhere, this script should be modified accordingly.
+- Running genome indexing and alignment is extremely computationally expensive for human genome. The indexing of genome using following command took me ~3 hours (14442.15 sec):
+
+```
+bwa index reference/hg19.fa
+```
+
+The mapping of reads to the reference genome using following command took another 40 minutes (2362.867 seconds)
+
+```bash
+bwa mem -M -t 8 $REF sample_data/tu.r1.fq.gz sample_data/tu.r2.fq.gz
+```
+
+Is it how it was supposed to be or I did something wrong? What does it mean to downsample the genome?
+
+- First I tried to use Delly tool but I failed to install it because of the following error:
+
+```
+delly: error while loading shared libraries: libboost_iostreams.so.1.67.0: cannot open shared object file: No such file or directory
+```
+Same issue is discussed [here](https://github.com/jodyphelan/TBProfiler/issues/88).
